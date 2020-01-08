@@ -17,7 +17,7 @@ from discord import opus
 Client = discord.Client()
 bot_prefix = "~"
 client = commands.Bot(command_prefix = commands.when_mentioned_or(bot_prefix))
-Token = "NDIwMjgyODc5MDU1MTAxOTY0.DX8o-g.AbQ1kYczCSpciUC05YiLp3_oXSk"
+Token = "NjYzNjQ2MzE0MDgwMjM5NjI2.XhLjCQ.Xfbq5wtt_lxac4UiYkjXP5p9xtQ"
 
 
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly']
@@ -30,8 +30,9 @@ async def on_ready():
     print ("Name: {}".format(client.user.name))
     print ("ID: {}".format(client.user.id) + '\n')
 
-class Schedule:
-    def __init__(self):
+class Schedule(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
         creds = None
         if os.path.exists('token.pickle'):
             with open('token.pickle', 'rb') as token:
@@ -56,9 +57,9 @@ class Schedule:
     def __str__(self):
         return self.sheet
 
-    @client.command(pass_context = False, no_pm = False)
-    async def getValues(self):
-        return values
+    @commands.command(pass_context = True, no_pm = False)
+    async def getValues(self, ctx):
+        await ctx.send(self.values)
 
-#client.add_cog(Schedule(client))
+client.add_cog(Schedule(client))
 client.run(Token)
