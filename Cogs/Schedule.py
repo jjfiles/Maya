@@ -63,8 +63,7 @@ class Schedule(commands.Cog):
         }
 
         #define rows for get requests
-        self.rows = {
-            "WEEK": "1", 
+        self.rows = {     
             0: "2", 
             1: "3", 
             2: "4", 
@@ -116,7 +115,7 @@ class Schedule(commands.Cog):
             6: "Sunday",
         }
 
-        self.doing = ["Work", "School", "Free", "Outside", "Busy"]
+        self.doing = ["Work", "School", "Free", "Outside", "Busy", "Sleep"]
 
         """
         request is as follows
@@ -135,15 +134,15 @@ class Schedule(commands.Cog):
             sheetid = self.names.get(arg)
             day = self.days.get(datetime.datetime.now().weekday())
             col = self.columns.get(day)
-            print(datetime.datetime.now().hour)
             row = self.rows.get(datetime.datetime.now().hour)
 
             query = sheetid + SHEET_END + col + row
             print(query)
-            print("Query called by {}".format(ctx.author) + "\n")
+            print("_whereis called by {}".format(ctx.author) + "\n")
 
             request = self.sheet.values().get(spreadsheetId=SCHEDULE_SPREAD_ID, range = query).execute()
             response = request.get('values', [])
+
             try:
                 sresponse = response[0]
                 sresponse = str(sresponse).strip("[]'")
@@ -157,3 +156,57 @@ class Schedule(commands.Cog):
                 await ctx.send("Unknown, but probably free.")
         else:
             await ctx.send("That name is not in our Database.")
+
+    @commands.command(pass_context = True, no_pm = False)
+    async def free(self, ctx, arg):
+        hours = []
+        breaks = []
+
+        if arg in self.names:
+            sheetid = self.names.get(arg)
+
+            #current day and current hour
+            curCol = self.columns.get(self.days.get(datetime.datetime.now().weekday()))
+            curRow = self.rows.get(datetime.datetime.now().hour)
+            for e in self.rows:
+                if e < int(curRow):
+                    pass
+                else:
+                    query = sheetid + SHEET_END + curCol + str(e)
+                    request = self.sheet.values().get(spreadsheetId=SCHEDULE_SPREAD_ID, range = query).execute()
+                    response = request.get('values', [])
+
+                    try:
+                        sresponse = response[0]
+                        sresponse = str(sresponse).strip("[]'")
+                        if sresponse == "Free" or sresponse == None:
+                            hours.append(e)
+                    except IndexError:
+                        hours.append(self.rows.get(e))
+
+            for each in hours:
+                print(each)
+
+            for e in hours:
+                try:
+                    if int(hours[e]) == int(hours[int(e)+1]) - 1:
+                        pass
+                    else:
+                        breaks.append(e)
+                except IndexError:
+                    breaks.append(e)
+            for each in breaks:
+                print(each)
+
+            index = breaks[0]
+            for e in breaks:
+                try:
+                    if breaks[int(e)] == hours[0]:
+                        query1 = sheetid + SHEET_END + "A" + hours[0]
+                        r1 = self.sheet.values().get(spreadsheetId=SCHEDULE_SPREAD_ID, range = query1).execute()
+                        re1 = r1.get('values', [])
+                        # r2 = 
+                        # try:
+                except IndexError:
+                    pass
+                        
