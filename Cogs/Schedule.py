@@ -15,21 +15,23 @@ from discord.ext import commands
 
 from secrets import spreadid
 
-#GSheets scopes and sheet ID
+# GSheets scopes and sheet ID
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 SCHEDULE_SPREAD_ID = spreadid
 
-#DO NOT CHANGE THESE
+# DO NOT CHANGE THESE
 SHEET_END = "!"
 RANGE_MID = ":"
 
-#Cog to query schdules in a gsheet
+# Cog to query schdules in a gsheet
+
+
 class Schedule(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
 
-        #create / load token file with G auth
+        # create / load token file with G auth
         creds = None
         if os.path.exists('token.pickle'):
             with open('token.pickle', 'rb') as token:
@@ -43,16 +45,16 @@ class Schedule(commands.Cog):
                 )
                 creds = flow.run_local_server(port=0)
 
-            with open ('token.pickle', 'wb') as token:
+            with open('token.pickle', 'wb') as token:
                 pickle.dump(creds, token)
 
-        #Build service with given creds
+        # Build service with given creds
         service = build('sheets', 'v4', credentials=creds)
 
-        #initialize spreadsheet
+        # initialize spreadsheet
         self.sheet = service.spreadsheets()
 
-        #define columns for get requests
+        # define columns for get requests
         self.columns = {
             "Index": "A",
             "Sunday": "B",
@@ -64,42 +66,41 @@ class Schedule(commands.Cog):
             "Saturday": "H",
         }
 
-        #define rows for get requests
-        self.rows = {     
-            0: "2", 
-            1: "3", 
-            2: "4", 
-            3: "5", 
-            4: "6", 
-            5: "7", 
-            6: "8", 
-            7: "9", 
-            8: "10", 
-            9: "11", 
-            10: "12", 
-            11: "13", 
-            12: "14", 
-            13: "15", 
-            14: "16", 
-            15: "17", 
-            16: "18", 
-            17: "19", 
-            18: "20", 
-            19: "21", 
-            20: "22", 
-            21: "23", 
-            22: "24", 
-            23: "25", 
+        # define rows for get requests
+        self.rows = {
+            0: "2",
+            1: "3",
+            2: "4",
+            3: "5",
+            4: "6",
+            5: "7",
+            6: "8",
+            7: "9",
+            8: "10",
+            9: "11",
+            10: "12",
+            11: "13",
+            12: "14",
+            13: "15",
+            14: "16",
+            15: "17",
+            16: "18",
+            17: "19",
+            18: "20",
+            19: "21",
+            20: "22",
+            21: "23",
+            22: "24",
+            23: "25",
         }
-
 
         Adam = "Adam"
         Jeff = "Jeff"
         Sam = "Sam"
 
-        #TODO: MAKE DYNAMIC
+        # TODO: MAKE DYNAMIC
         self.names = {
-            "jeff": Jeff, 
+            "jeff": Jeff,
             "Jeff": Jeff,
             "adam": Adam,
             "Adam": Adam,
@@ -130,7 +131,7 @@ class Schedule(commands.Cog):
     def __str__(self):
         return self.sheet
 
-    @commands.command(pass_context = True, no_pm = False)
+    @commands.command(pass_context=True, no_pm=False)
     async def whereis(self, ctx, arg):
         if arg in self.names:
             sheetid = self.names.get(arg)
@@ -140,7 +141,8 @@ class Schedule(commands.Cog):
 
             query = sheetid + SHEET_END + col + row
 
-            request = self.sheet.values().get(spreadsheetId=SCHEDULE_SPREAD_ID, range = query).execute()
+            request = self.sheet.values().get(
+                spreadsheetId=SCHEDULE_SPREAD_ID, range=query).execute()
             response = request.get('values', [])
 
             try:
@@ -157,7 +159,7 @@ class Schedule(commands.Cog):
         else:
             await ctx.send("That name is not in our Database.")
 
-    @commands.command(pass_context = True, no_pm = False)
+    @commands.command(pass_context=True, no_pm=False)
     async def free(self, ctx, arg):
         hours = []
         breaks = []
@@ -165,15 +167,17 @@ class Schedule(commands.Cog):
         if arg in self.names:
             sheetid = self.names.get(arg)
 
-            #current day and current hour
-            curCol = self.columns.get(self.days.get(datetime.datetime.now().weekday()))
+            # current day and current hour
+            curCol = self.columns.get(self.days.get(
+                datetime.datetime.now().weekday()))
             curRow = self.rows.get(datetime.datetime.now().hour)
             for e in self.rows:
                 if e < int(curRow):
                     pass
                 else:
                     query = sheetid + SHEET_END + curCol + str(e)
-                    request = self.sheet.values().get(spreadsheetId=SCHEDULE_SPREAD_ID, range = query).execute()
+                    request = self.sheet.values().get(
+                        spreadsheetId=SCHEDULE_SPREAD_ID, range=query).execute()
                     response = request.get('values', [])
 
                     try:
@@ -203,10 +207,10 @@ class Schedule(commands.Cog):
                 try:
                     if breaks[int(e)] == hours[0]:
                         query1 = sheetid + SHEET_END + "A" + hours[0]
-                        r1 = self.sheet.values().get(spreadsheetId=SCHEDULE_SPREAD_ID, range = query1).execute()
+                        r1 = self.sheet.values().get(
+                            spreadsheetId=SCHEDULE_SPREAD_ID, range=query1).execute()
                         re1 = r1.get('values', [])
-                        # r2 = 
+                        # r2 =
                         # try:
                 except IndexError:
                     pass
-                        
