@@ -24,8 +24,8 @@ Multifuctional Discord Bot
         Jeff is free from 18:00-20:00, and 22:00-00:00
         ```
 
-## Hidden files 
-# Secrets.py
+# Hidden files 
+## Secrets.py
 - in root dir
     - Required
     ```sh
@@ -35,6 +35,6 @@ Multifuctional Discord Bot
     ```sh
     spreadid = "YOUR SPREADSHEET ID"
     ```
-# credentials.json
+## credentials.json
 - required only if using schedule cog
     - recieved from this link: https://developers.google.com/sheets/api/quickstart/python
