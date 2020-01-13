@@ -13,9 +13,11 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from discord.ext.commands import Bot
 from discord.ext import commands
 
+from secrets import spreadid
+
 #GSheets scopes and sheet ID
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
-SCHEDULE_SPREAD_ID = '1AKu3quOJxEezhgCItjn3CpcnmRiIMPLIaNoov7OmofE'
+SCHEDULE_SPREAD_ID = spreadid
 
 #DO NOT CHANGE THESE
 SHEET_END = "!"
@@ -137,8 +139,6 @@ class Schedule(commands.Cog):
             row = self.rows.get(datetime.datetime.now().hour)
 
             query = sheetid + SHEET_END + col + row
-            print(query)
-            print("_whereis called by {}".format(ctx.author) + "\n")
 
             request = self.sheet.values().get(spreadsheetId=SCHEDULE_SPREAD_ID, range = query).execute()
             response = request.get('values', [])
