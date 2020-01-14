@@ -1,31 +1,33 @@
 # Maya
 Multifuctional Discord Bot
 
+## Table of Contents
 - [Maya](#maya)
-      - [In Progress Cogs](#in-progress-cogs)
-      - [TODO Cogs](#todo-cogs)
+  - [Table of Contents](#table-of-contents)
+  - [In Progress Cogs](#in-progress-cogs)
+  - [TODO Cogs](#todo-cogs)
 - [Setup](#setup)
-        - [Set some up files and variables](#set-some-up-files-and-variables)
-        - [Setup your environment](#setup-your-environment)
-        - [Run the bot](#run-the-bot)
+  - [Set some up files and variables](#set-some-up-files-and-variables)
+  - [Setup your environment](#setup-your-environment)
+  - [Run the bot](#run-the-bot)
 - [Cog Setups](#cog-setups)
   - [Schedule Cog](#schedule-cog)
 - [Commands and Event Listeners](#commands-and-event-listeners)
   - [Base](#base)
   - [Schedule](#schedule)
 
-#### In Progress Cogs
-1. Base
-2. Schedule
+## In Progress Cogs
+1. [Base](bot.py)
+2. [Schedule](Cogs/Schedule.py)
 
-#### TODO Cogs  
+## TODO Cogs  
 1. Patch Notes
 2. Sound Board
 3. Music Player
 4. Decision Maker
 
 # Setup
-##### Set some up files and variables
+## Set some up files and variables
 Create a file to hold your secret variables 
 > must be named **secrets.py**
 
@@ -41,7 +43,7 @@ Acquired from [discord's dev portal](https://discordapp.com/developers/applicati
 token = "YOUR BOT TOKEN GOES HERE"
 ```
 
-##### Setup your environment
+## Setup your environment
 
 ```powershell
 virtualenv venv
@@ -51,7 +53,7 @@ pip install -r requirements.txt
 venv/Scripts/activate.ps1
 ```
 
-##### Run the bot
+## Run the bot
 
 ```powershell
 python bot.py
@@ -86,6 +88,7 @@ Until it is made dynamic (coming soon), I am using this format for the spreadshe
 | 5   | 4 AM  |        |     |          |
 | ... | ...   |        |     |          |
 | 25  | 11 PM |        |     |          |
+
 With the name of each sheet being the persons first name capitalized
 > i.e. Jeff
 
