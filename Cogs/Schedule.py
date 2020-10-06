@@ -131,7 +131,13 @@ class Schedule(commands.Cog):
     def __str__(self):
         return self.sheet
 
-    @commands.command(pass_context=True, no_pm=False)
+    @commands.command(
+        pass_context=True,
+        no_pm=False,
+        brief="Returns what is on someone's schedule right now",
+        help="Follow this command with a name, it returns that person's schedule at the current time"
+        )
+        
     async def whereis(self, ctx, arg):
         if arg in self.names:
             sheetid = self.names.get(arg)
@@ -159,7 +165,12 @@ class Schedule(commands.Cog):
         else:
             await ctx.send("That name is not in our Database.")
 
-    @commands.command(pass_context=True, no_pm=False)
+    @commands.command(
+        pass_context=True,
+        no_pm=False,
+        brief="Returns when someone is free that rest of day",
+        help="Follow this command with a name, it will give you a list of times that person is free for the rest of the day"
+        )
     async def free(self, ctx, arg):
         hours = []
         breaks = []

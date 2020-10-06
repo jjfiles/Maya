@@ -34,6 +34,9 @@ async def on_ready():
     print(f"Name: {client.user.name}")
     print(f"ID: {client.user.id}" + '\n')
 
+@client.command()
+async def ping(ctx):
+    await ctx.send(f'Pong! {round (client.latency * 1000)}ms')
 
 @client.event
 async def on_command_completion(ctx):
